@@ -13,7 +13,6 @@ sys.setdefaultencoding('utf-8')
 
 class PostHandler(BaseHTTPRequestHandler):
 
-
     def do_POST(self):
         # Parse the form data posted
         enc="UTF-8"
@@ -39,19 +38,24 @@ class PostHandler(BaseHTTPRequestHandler):
         # Echo back information about what was posted in the form
         for field in form.keys():
             field_item = form[field]
-            if field_item.filename:
-                # The field contains an uploaded file
-                print field_item.filename +'111'
-                file_data = field_item.file.read()
-                with open('/python/file/' + field_item.filename,'wb') as f:
-                	f.write(file_data)
-                label = str(load_cnn.image_one_label('/python/file/' + field_item.filename))
-                dict_return ={}
-                dict_return['name'] = label
-                json_str = json.dumps(dict_return)
-                file_len = len(file_data)
-                del file_data
-                self.wfile.write(json_str)
+			try:
+				if field_item.filename:
+					# The field contains an uploaded file
+					print field_item.filename +'111'
+					file_data = field_item.file.read()
+					with open('/python/file/' + field_item.filename,'wb') as f:
+						f.write(file_data)
+					label = str(load_cnn.image_one_label('/python/file/' + field_item.filename))
+					dict_return ={}
+					dict_return['name'] = label
+					dict_return['code'] = 200
+					json_str = json.dumps(dict_return)
+					file_len = len(file_data)
+					del file_data
+					self.wfile.write(json_str)
+			except:
+				a = json.dumps({"code":0,"name":""})
+				self.wfile.write(a)
 
 
         return 
