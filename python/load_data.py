@@ -21,6 +21,7 @@ def read_img(path):
 			if class_ not in dict_label.values():
 				dict_label[idx] = class_
 			img = Image.open(im)
+			img = img.convert('RGB')
 			img = img.resize((w,h))
 			img_px = np.asarray(img,dtype = 'float32')
 			imgs.append(img_px)
