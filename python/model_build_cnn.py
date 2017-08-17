@@ -1,6 +1,6 @@
 import pickle
 import tensorflow as tf 
-import load_test
+import load_data
 import numpy as np
 
 with open('/python/images/python/load_data.pkl','rb') as f:
