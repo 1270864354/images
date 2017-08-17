@@ -4,10 +4,8 @@ import cgi
 import numpy as np
 import sys
 from PIL import Image
-import load_cnn_test
-import os
+import load_cnn
 import json
-os.chdir('/root/work/flower/flower_photos')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -45,9 +43,9 @@ class PostHandler(BaseHTTPRequestHandler):
                 # The field contains an uploaded file
                 print field_item.filename +'111'
                 file_data = field_item.file.read()
-                with open('/root/work/flower/flower_photos/' + field_item.filename,'wb') as f:
+                with open('/python/file/' + field_item.filename,'wb') as f:
                 	f.write(file_data)
-                label = str(load_cnn_test.image_one_label('/root/work/flower/flower_photos/' + field_item.filename))
+                label = str(load_cnn.image_one_label('/python/file/' + field_item.filename))
                 dict_return ={}
                 dict_return['name'] = label
                 json_str = json.dumps(dict_return)

@@ -82,10 +82,10 @@ def split_train_val_test(data,label,validation_ratio,test_ratio):
 if __name__ == '__main__':
 	import pickle
 	#data_path
-	path = '/root/work/flower/flower_photos'
+	path = '/python/images/images'  	#图片地址
 	#model_path
-	model_path='/root/work/flower/flower_photos'
-	#64*64*3
+	model_path='/python/images/python'   #模型地址
+	#64*64*3  w：宽 h:高  c:1 黑白   3 rgb
 	w = 64
 	h =64
 	c = 3
@@ -123,8 +123,8 @@ if __name__ == '__main__':
 	d_model['dict_label'] = dict_label
 
 	
-	with open(model_path +'/load_testdata.pkl', 'wb') as f:
+	with open(model_path +'/load_data.pkl', 'wb') as f:
 		pickle.dump(d_data,f)
-	with open(model_path +'/load_testmodel.pkl', 'wb') as f:
+	with open(model_path +'/load_model.pkl', 'wb') as f:
 		pickle.dump(d_model,f)
 	print 'Load data finished!'

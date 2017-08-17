@@ -3,7 +3,7 @@ import tensorflow as tf
 import load_test
 import numpy as np
 
-with open('/root/work/flower/flower_photos/load_testdata.pkl','rb') as f:
+with open('/python/images/python/load_data.pkl','rb') as f:
 	d = pickle.load(f)
 	print 'Load success!'
 
@@ -29,22 +29,26 @@ batch_size = 128
 
 inputs_ = tf.placeholder(tf.float32,[None,w,h,c],name = 'inputs_')
 targets_ = tf.placeholder(tf.float32,[None,n_class],name = 'targets_')
-
+#像素低使用较低的层数。像素高使用较高的层数。层数越高，所占用的资源越高
+#64滤波器的数量，conv1，第一层卷积与池化
+#（2,2），滤波器大小2*2
 conv1 = tf.layers.conv2d(inputs_,64,(2,2),padding='same',activation = tf.nn.relu,
 						kernel_initializer = tf.truncated_normal_initializer(mean = 0.0,stddev = 0.1))
+#（2,2），第一个（2,2）是在2*2矩阵中最大的那一个，第二个（2,2）是偏移2*2矩阵
 conv1 = tf.layers.max_pooling2d(conv1,(2,2),(2,2),padding = 'same')
-
+#128 = 64*2，conv2，第二层卷积与池化
 conv2 = tf.layers.conv2d(conv1, 128, (2,2), padding='same', activation=tf.nn.relu,
                         kernel_initializer=tf.truncated_normal_initializer(mean=0.0, stddev=0.1))
 conv2 = tf.layers.max_pooling2d(conv2, (2,2), (2,2), padding='same')
-
+#256 = 128*2，conv3，第三层卷积与池化
 conv3 = tf.layers.conv2d(conv2, 256, (2,2), padding='same', activation=tf.nn.relu,
                         kernel_initializer=tf.truncated_normal_initializer(mean=0.0, stddev=0.1))
 conv3 = tf.layers.max_pooling2d(conv3, (2,2), (2,2), padding='same')
 
+#对应最后一层卷积与池化
 shape = np.prod(conv3.get_shape().as_list()[1:])
 conv3 = tf.reshape(conv3,[-1,shape])
-
+#2048,1024 对应全连接层的神经元数量
 fc1 = tf.contrib.layers.fully_connected(conv3,2048,activation_fn=tf.nn.relu)
 fc1 = tf.nn.dropout(fc1,keep_prob)
 fc2 = tf.contrib.layers.fully_connected(fc1,1024,activation_fn = tf.nn.relu)

@@ -6,10 +6,10 @@ from PIL import Image
 from sklearn.preprocessing  import MinMaxScaler
 from sklearn.preprocessing import LabelBinarizer
 import pickle
-import load_test
+import load_data
 
 def image_one_label(path):
-	with open('/root/work/flower/flower_photos/load_testmodel.pkl','rb') as f:
+	with open('/python/images/python/load_model.pkl','rb') as f:
 	    dict_model = pickle.load(f)
 	model_path =dict_model['model_path']
 	minmax =dict_model['minmax']
@@ -19,8 +19,8 @@ def image_one_label(path):
 	c =dict_model['c']
 	n_class =dict_model['n_class']
 	dict_label =dict_model['dict_label']
-	x_test = load_test.read_one_img(path,w,h)
-	x_test = load_test.min_max_scaler_transform(x_test,minmax,w,h,c)
+	x_test = load_data.read_one_img(path,w,h)
+	x_test = load_data.min_max_scaler_transform(x_test,minmax,w,h,c)
 
 	loaded_graph = tf.Graph()
 	test_batch_size= 1
