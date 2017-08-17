@@ -24,21 +24,21 @@ model_path = d['model_path']
 
 img_shape = x_train_.shape
 keep_prob = 0.6
-epochs = 5	
+epochs = 20
 batch_size = 20
 
 inputs_ = tf.placeholder(tf.float32,[None,w,h,c],name = 'inputs_')
 targets_ = tf.placeholder(tf.float32,[None,n_class],name = 'targets_')
-conv1 = tf.layers.conv2d(inputs_,32,(2,2),padding='same',activation = tf.nn.relu,
+conv1 = tf.layers.conv2d(inputs_,64,(2,2),padding='same',activation = tf.nn.relu,
 						kernel_initializer = tf.truncated_normal_initializer(mean = 0.0,stddev = 0.1))
 
 conv1 = tf.layers.max_pooling2d(conv1,(2,2),(2,2),padding = 'same')
 
-conv2 = tf.layers.conv2d(conv1, 64, (2,2), padding='same', activation=tf.nn.relu,
+conv2 = tf.layers.conv2d(conv1, 128, (2,2), padding='same', activation=tf.nn.relu,
                         kernel_initializer=tf.truncated_normal_initializer(mean=0.0, stddev=0.1))
 conv2 = tf.layers.max_pooling2d(conv2, (2,2), (2,2), padding='same')
 
-conv3 = tf.layers.conv2d(conv2, 128, (2,2), padding='same', activation=tf.nn.relu,
+conv3 = tf.layers.conv2d(conv2, 256, (2,2), padding='same', activation=tf.nn.relu,
                         kernel_initializer=tf.truncated_normal_initializer(mean=0.0, stddev=0.1))
 conv3 = tf.layers.max_pooling2d(conv3, (2,2), (2,2), padding='same')
 
@@ -46,9 +46,9 @@ conv3 = tf.layers.max_pooling2d(conv3, (2,2), (2,2), padding='same')
 shape = np.prod(conv3.get_shape().as_list()[1:])
 conv3 = tf.reshape(conv3,[-1,shape])
 
-fc1 = tf.contrib.layers.fully_connected(conv3,1024,activation_fn=tf.nn.relu)
+fc1 = tf.contrib.layers.fully_connected(conv3,2048,activation_fn=tf.nn.relu)
 fc1 = tf.nn.dropout(fc1,keep_prob)
-fc2 = tf.contrib.layers.fully_connected(fc1,512,activation_fn = tf.nn.relu)
+fc2 = tf.contrib.layers.fully_connected(fc1,1024,activation_fn = tf.nn.relu)
 
 logits_ = tf.contrib.layers.fully_connected(fc2,n_class,activation_fn = None)
 logits_ = tf.identity(logits_,name='logits_')
