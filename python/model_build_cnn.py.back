@@ -24,7 +24,7 @@ model_path = d['model_path']
 
 img_shape = x_train_.shape
 keep_prob = 0.6
-epochs = 20
+epochs = 20		#迭代次数
 batch_size = 128
 
 inputs_ = tf.placeholder(tf.float32,[None,w,h,c],name = 'inputs_')
