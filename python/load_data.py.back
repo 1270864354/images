@@ -85,6 +85,7 @@ if __name__ == '__main__':
 	path = '/python/images/images'  	
 	#model_path
 	model_path='/python/images/python'   
+	#64*64*3  w：宽 h:高  c:1 黑白   3 rgb
 	w = 64
 	h =64
 	c = 3
